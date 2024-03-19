@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// Ignore Spelling: dto
+
+using Assignment_1_DotNet.Data;
+using Assignment_1_DotNet.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,89 +21,105 @@ namespace KeyValueService.Controllers
         }
 
         [HttpGet("{key}")]
-        public async Task<IActionResult> Get(string key)
+        public async Task<IActionResult> GetKeyValuePairByKeyAsync([FromRoute] string key)
         {
-            var keyValue = await _context.KeyValuePairs.FirstOrDefaultAsync(kvp => kvp.Key == key);
+            try
+            {
+                var keyValues = await _context.KeyValuePairs.Where(kvp => kvp.Key == key).ToListAsync();
 
-            if (keyValue != null)
-            {
-                return Ok(new { key = keyValue.Key, value = keyValue.Value });
+                if (keyValues.Count != 0)
+                {
+                    //return Ok(new { key = keyValue.Key, value = keyValue.Value });
+                    return Ok(keyValues);
+                }
+                else
+                {
+                    return NotFound();
+                }
+
             }
-            else
+            catch(Exception ex)
             {
-                return NotFound();
+                return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(KeyValuePairDto dto)
+        public async Task<IActionResult> AddKeyValuePairAsync([FromBody]KeyValueDto dto)
         {
-            var existingKeyValue = await _context.KeyValuePairs.FirstOrDefaultAsync(kvp => kvp.Key == dto.Key);
-
-            if (existingKeyValue != null)
+            try
             {
-                return Conflict();
+                var existingKeyValue = await _context.KeyValuePairs.FirstOrDefaultAsync(kvp => kvp.Key == dto.Key);
+
+                if (existingKeyValue != null)
+                {
+                    return Conflict();
+                }
+
+                var newKeyValue = new KeyValue { Key = dto.Key, Value = dto.Value };
+                _context.KeyValuePairs.Add(newKeyValue);
+                await _context.SaveChangesAsync();
+
+                return Ok();
             }
-
-            var newKeyValue = new KeyValuePair { Key = dto.Key, Value = dto.Value };
-            _context.KeyValuePairs.Add(newKeyValue);
-            await _context.SaveChangesAsync();
-
-            return Ok();
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPatch("{key}/{value}")]
-        public async Task<IActionResult> Update(string key, string value)
+        public async Task<IActionResult> UpdateKeyValuePairByKeyAsync([FromRoute] string key, [FromRoute] string value)
         {
-            var keyValue = await _context.KeyValuePairs.FirstOrDefaultAsync(kvp => kvp.Key == key);
+            try
+            {
+                var keyValues = await _context.KeyValuePairs.Where(kvp => kvp.Key == key).ToListAsync();
 
-            if (keyValue != null)
-            {
-                keyValue.Value = value;
-                await _context.SaveChangesAsync();
-                return Ok();
+                if (keyValues.Count != 0)
+                {
+                    foreach (var keyValue in keyValues)
+                    {
+                        keyValue.Value = value;
+                    }
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return NotFound();
+                return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 
         [HttpDelete("{key}")]
-        public async Task<IActionResult> Delete(string key)
+        public async Task<IActionResult> DeleteKeyValuePairByKeyAsync([FromRoute] string key)
         {
-            var keyValue = await _context.KeyValuePairs.FirstOrDefaultAsync(kvp => kvp.Key == key);
+            try
+            {
+                var keyValues = await _context.KeyValuePairs.Where(kvp => kvp.Key == key).ToListAsync();
 
-            if (keyValue != null)
-            {
-                _context.KeyValuePairs.Remove(keyValue);
-                await _context.SaveChangesAsync();
-                return Ok();
+                if (keyValues.Count != 0)
+                {
+                    foreach (var keyValue in keyValues)
+                    {
+                        _context.KeyValuePairs.Remove(keyValue);
+                    }
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return NotFound();
+                return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-    }
-
-    public class KeyValueDbContext : DbContext
-    {
-        public KeyValueDbContext(DbContextOptions<KeyValueDbContext> options) : base(options) { }
-
-        public DbSet<KeyValuePair> KeyValuePairs { get; set; }
-    }
-
-    public class KeyValuePair
-    {
-        public int Id { get; set; }
-        public string Key { get; set; }
-        public string Value { get; set; }
-    }
-
-    public class KeyValuePairDto
-    {
-        public string Key { get; set; }
-        public string Value { get; set; }
     }
 }

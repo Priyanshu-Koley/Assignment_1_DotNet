@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+eFOEYf8yAJ16Dg8D2Y7TGoKRUPQuB8rnprr9+mb5o4SX2sUZy7yu1Vp5wDL3HYYu0W/xlAXYzF0DAKJ/Ymv9w==",
+  "dgSpecHash": "fa3RjbbmvooKS9MSHj+81K8H2iXdmzcA21/dV1vVNI+yLO+Rc4AAJvxgDzpYa6UuZyGSfgvQbPlEZQxzBAhOIg==",
   "success": true,
   "projectFilePath": "E:\\DotNet\\Assignment_1_DotNet\\Assignment_1_DotNet\\Assignment_1_DotNet.csproj",
   "expectedPackageFiles": [
@@ -16,6 +16,7 @@
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\8.0.3\\microsoft.entityframeworkcore.analyzers.8.0.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.design\\8.0.3\\microsoft.entityframeworkcore.design.8.0.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\8.0.3\\microsoft.entityframeworkcore.relational.8.0.3.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\8.0.3\\microsoft.entityframeworkcore.tools.8.0.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\8.0.0\\microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.caching.memory\\8.0.0\\microsoft.extensions.caching.memory.8.0.0.nupkg.sha512",
